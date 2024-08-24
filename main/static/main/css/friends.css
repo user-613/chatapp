@@ -25,3 +25,12 @@
     padding: 8px 16px;
     height: 64px;
 }
+
+/* 追加 */
+.pagination {
+    text-align: center;
+}
+
+.pagination a {
+    text-decoration: underline;
+}

@@ -9,15 +9,38 @@
 
 {% block content %}
 <div class="friends">
+    <form method="GET" class="search-form">
+        <i class="fas fa-search"></i>
+        {{ form.keyword }}
+        <button type="submit" class="search-form__submit">検索</button>
+    </form>
     {# 友達のリスト表示部分 #}
     <ul class="friends-list">
         {% for friend in friends %}
         <li class="friends-list__item">
             <a href="{% url 'talk_room' friend.id %}" class="friends-list__link">
-                <div class="friends-list__username">{{ friend.username }}</div>
-            </a>        
+                <div class="friends-list__username">
+                    {{ friend.username }}<br>
+                    {{ friend.last_talk_time }}
+                </div>
+            </a>
         </li>
         {% endfor %}
     </ul>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="{% url 'friends' %}?keyword={{ keyword }}&page=1">&laquo; 先頭へ</a>
+        <a href="{% url 'friends' %}?keyword={{ keyword }}&page={{ page_obj.previous_page_number }}">前へ</a>
+        {% endif %}
+
+        <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="{% url 'friends' %}?keyword={{ keyword }}&page={{ page_obj.next_page_number }}">次へ</a>
+        <a href="{% url 'friends' %}?keyword={{ keyword }}&page={{ page_obj.paginator.num_pages }}">最後へ &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 </div>
 {% endblock %}

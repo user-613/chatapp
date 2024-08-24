@@ -6,12 +6,17 @@ from .forms import (
     TalkForm,
     UsernameChangeForm,  # 追加
     EmailChangeForm,
+    FriendsSearchForm,
 )
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from .models import User, Talk
 from django.db.models import Q
 from django.urls import reverse_lazy
+from django.db.models import Max
+from django.db.models.functions import Greatest, Coalesce
+from django.contrib.auth.mixins import LoginRequiredMixin  # 追加
+from django.views.generic.list import ListView
 
 
 def index(request):
@@ -62,11 +67,50 @@ class LoginView(auth_views.LoginView):
     template_name = "main/login.html"  # テンプレートを指定
 
 
-@login_required
-def friends(request):
-    friends = User.objects.exclude(id=request.user.id)
-    context = {"friends": friends}
-    return render(request, "main/friends.html", context)
+class FriendsView(LoginRequiredMixin, ListView):
+    template_name = "main/friends.html"
+    paginate_by = 7
+    context_object_name = "friends"
+
+    def get_queryset(self):
+        queryset = (
+            User.objects.exclude(id=self.request.user.id)
+            .annotate(
+                sent_talk__time__max=Max(
+                    "sent_talk__time",
+                    filter=Q(sent_talk__receiver=self.request.user),
+                ),
+                received_talk__time__max=Max(
+                    "received_talk__time",
+                    filter=Q(received_talk__sender=self.request.user),
+                ),
+                time_max=Greatest("sent_talk__time__max", "received_talk__time__max"),
+                last_talk_time=Coalesce(
+                    "time_max",
+                    "sent_talk__time__max",
+                    "received_talk__time__max",
+                ),
+            )
+            .order_by("-last_talk_time")
+            .values("id", "username", "last_talk_time")
+        )
+        form = FriendsSearchForm(self.request.GET)
+        if form.is_valid():
+            keyword = form.cleaned_data["keyword"]
+            if keyword:
+                queryset = queryset.filter(username__icontains=keyword)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        form = FriendsSearchForm(self.request.GET)
+        if form.is_valid():
+            context["keyword"] = form.cleaned_data["keyword"]
+
+        context["form"] = form
+        return context
 
 
 @login_required
