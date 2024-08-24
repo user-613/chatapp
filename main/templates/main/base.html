@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}{# 静的ファイルを使うため、static タグを読み込む（後で説明） #}
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>チャットアプリ</title>
+        <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        {% block extra_style %}{% endblock %}{# 追加 CSS 用ブロック #}
+    </head>
+    <body>
+        {% block header %}
+        <header class="header">
+            <div class="header__title">
+                {% block header_title %}{% endblock %}
+            </div>
+            {% block talk_room %}{% endblock %}
+        </header>
+        {% endblock %}{# ヘッダー用ブロック #}
+        {% block content %}{% endblock %}{# 各ページのメイン要素用ブロック #}
+        {% block footer %}
+        <footer class="footer">
+            <div class="footer__item">
+                <a href="{% url 'friends' %}" class="footer__link">
+                    <div class="footer__icon"><i class="fas fa-user-friends"></i></div>
+                    <div class="footer__label">友達</div>
+                </a>
+            </div>
+            <div class="footer__item">
+                <a href="{% url 'settings' %}" class="footer__link">
+                    <div class="footer__icon"><i class="fas fa-cog"></i></div>
+                    <div class="footer__label">設定</div>
+                </a>
+            </div>
+        </footer>
+        {% endblock %}{# フッター用ブロック #}
+        {% block extra_js %}{% endblock %}{# 追加 JavaScript 用ブロック #}
+    </body>
+</html>

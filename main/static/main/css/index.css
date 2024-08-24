@@ -1,0 +1,18 @@
+.buttons {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: max-content;
+    margin: auto;
+    text-align: center;
+}
+
+.button {
+    display: block;
+    width: 120px;
+    margin: 16px auto;
+    padding: 8px 0;
+    border: 1px solid #9b9b9b;
+    border-radius: 10px;
+}

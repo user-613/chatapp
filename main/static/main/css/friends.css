@@ -1,0 +1,27 @@
+.friends {
+    padding: 64px 0;
+}
+
+.friends-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.friends-list__item {
+    border-bottom: 1px solid #888;
+}
+
+/* 下にしか枠線を引いていないので、初めの要素にだけ上にも枠線を引くように設定 */
+.friends-list__item:first-child {
+    border-top: 1px solid #888;
+}
+
+.friends-list__username {
+    font-size: 1.2rem;
+}
+.friends-list__link {
+    display: block;
+    padding: 8px 16px;
+    height: 64px;
+}

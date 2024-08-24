@@ -1,0 +1,97 @@
+.talk-room {
+    padding: 64px 0 72px;
+}
+
+/* トークの表示部分 */
+.chatboard {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chatboard__item {
+    padding: 8px;
+    border-bottom: 2px solid #eee;
+}
+
+.chatboard__item:first-child {
+    border-top: 2px solid #eee;
+}
+
+.chatboard__username {
+    margin: 0 0 4px;
+    font-size: 0.8rem;
+}
+
+.chatboard__message {
+    margin: 0;
+    word-break: break-all;
+}
+
+.chatboard__time {
+    position: absolute;
+    right: 16px;
+    font-size: 0.6rem;
+}
+
+/* 以下を追加 */
+/* トーク送信部分 */
+.message-form {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 48px;
+    background-color: #eee;
+    text-align: center;
+}
+
+.message-form * {
+    box-sizing: border-box;
+}
+
+.message-form input {
+    width: calc(100% - 5em);
+    margin: 10px 0;
+    padding: 0 12px;
+    border: 2px solid #131313;
+    border-radius: 14px;
+    font-size: 1rem;
+    line-height: 24px;
+}
+
+.message-form__submit {
+    width: 4em;
+    margin: 10px 0;
+    padding: 0;
+    border: 2px solid #131313;
+    border-radius: 16px;
+    font-size: 1rem;
+    background-color: transparent;
+}
+
+/* talk_room 固有の header の要素 */
+.back-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 16px;
+    height: 2rem;
+    margin: auto;
+    font-size: 2rem;
+    color: #888;
+}
+
+.reload-button {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 16px;
+    height: 1rem;
+    margin: auto;
+    padding: 4px 0.5em;
+    border: 2px solid #888;
+    border-radius: 1em;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: #888;
+}

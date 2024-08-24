@@ -1,0 +1,28 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'main/css/login.css' %}">
+{% endblock %}
+
+{% block header_title %}ログイン{% endblock %}
+
+{% block content %}
+<form action="{% url 'login' %}" method="POST" class="login-form">
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="login-form__error">ユーザー名とパスワードが一致しません。</div>
+    {% endif %}
+    <div class="login-form__field">
+        <label for="{{ form.username.id_for_label }}">ユーザー名:</label>
+        {{ form.username }}
+    </div>
+    <div class="login-form__field">
+        <label for="{{ form.password.id_for_label }}">パスワード:</label>
+        {{ form.password }}
+    </div>
+    <button type="submit" class="login-form__submit">送信</button>
+</form>
+{% endblock %}
+
+{% block footer %}{% endblock %}
