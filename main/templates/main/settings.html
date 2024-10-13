@@ -8,16 +8,41 @@
 {% block header_title %}設定{% endblock %}
 
 {% block content %}
-<div class="settings">
-    <div class="buttons">
-        {# ここにリンクを追加していきます #}
-        <a href="{% url 'username_change' %}" class="button">ユーザー名変更</a>
-        <a href="{% url 'email_change' %}" class="button">メールアドレス変更</a>{# 追加 #}
-        <a href="{% url 'password_change' %}" class="button">パスワード変更</a>{# 追加 #}
-        <form action="{% url "logout" %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="button">ログアウト</button>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="{% url 'forum:forum' topic.name %}?{% if tag %}tag={{ tag }}&{% endif %}page=1">&laquo; 先頭へ</a>
+        <a href="{% url 'forum:forum' topic.name %}?{% if tag %}tag={{ tag }}&{% endif %}page={{ page_obj.previous_page_number }}">前へ</a>
+        {% endif %}
+
+        <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="{% url 'forum:forum' topic.name %}?{% if tag %}tag={{ tag }}&{% endif %}page={{ page_obj.next_page_number }}">次へ</a>
+        <a href="{% url 'forum:forum' topic.name %}?{% if tag %}tag={{ tag }}&{% endif %}page={{ page_obj.paginator.num_pages }}">最後へ &raquo;</a>
+        <form class="message-form" action="{% url 'forum:forum' topic.name %}" method="POST" enctype="multipart/form-data"> {# enctype を message フォームに設定 #}
+        {{ message_form }}
+        <button type="submit" name="message" value="value">送信</button>
         </form>
-    </div>
+        {% endif %}
+    </span>
 </div>
-{% endblock %}
+        
+        {# ... #}
+
+<tr>
+    {% if message.image %}
+    <th>
+        <img src="{{ message.image.url }}" >
+    </th>
+    {% endif %}
+</tr>
+
+
+
+    </div>
+</div><object data="" type=""></object>
+
+
+ <nav></nav>

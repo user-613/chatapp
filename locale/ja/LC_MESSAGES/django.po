@@ -1,0 +1,26 @@
+# ...
+
+#: main/templatetags/chat_app.py:29
+#, python-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d 分前"
+msgstr[1] "%d 分前"
+
+#: main/templatetags/chat_app.py:32
+#, python-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d 時間前"
+msgstr[1] "%d 時間前"
+
+#: main/templatetags/chat_app.py:34
+#, python-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d 日前"
+msgstr[1] "%d 日前"
+
+#: main/templatetags/chat_app.py:36
+msgid "more than 1 week"
+msgstr "1 週間以上前"

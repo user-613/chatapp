@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -117,11 +118,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+USE_I18N = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "/static/"
+STATIC_ROOT = "/staticfiles"
+
+
+MEDIA_ROOT = BASE_DIR /"media"
+
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -130,7 +139,22 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "main.user"
 
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 LOGIN_URL = "login"  # ログインページを指定
 LOGIN_REDIRECT_URL = "friends"  # ログイン成功後に遷移するページを指定
 LOGOUT_REDIRECT_URL = "index"  #
+
+LANGUAGES = [
+    ("en", "English"),
+    ("ja", "Japanese"),
+]
+
+# ...
+try:
+    from .local_settings import *
+except ImportError:
+    # local_settings.py が存在しなくてもエラーにならないようにする
+    pass

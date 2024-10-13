@@ -4,9 +4,10 @@ from .forms import (
     SignUpForm,
     LoginForm,
     TalkForm,
-    UsernameChangeForm,  # 追加
+    UsernameChangeForm,  
     EmailChangeForm,
     FriendsSearchForm,
+    IconChangeForm, 
 )
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -15,7 +16,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.db.models import Max
 from django.db.models.functions import Greatest, Coalesce
-from django.contrib.auth.mixins import LoginRequiredMixin  # 追加
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 
 
@@ -67,12 +68,12 @@ class LoginView(auth_views.LoginView):
     template_name = "main/login.html"  # テンプレートを指定
 
 
-class FriendsView(LoginRequiredMixin, ListView):
-    template_name = "main/friends.html"
-    paginate_by = 7
+class ForumView(ListView):
+    template_name = "forum/forum.html"
+    paginate_by = 5
     context_object_name = "friends"
 
-    def get_queryset(self):
+    def get_queryset(self, **kwargs):
         queryset = (
             User.objects.exclude(id=self.request.user.id)
             .annotate(
@@ -92,13 +93,13 @@ class FriendsView(LoginRequiredMixin, ListView):
                 ),
             )
             .order_by("-last_talk_time")
-            .values("id", "username", "last_talk_time")
+            ("id", "username", "last_talk_time")
         )
         form = FriendsSearchForm(self.request.GET)
         if form.is_valid():
             keyword = form.cleaned_data["keyword"]
-            if keyword:
-                queryset = queryset.filter(username__icontains=keyword)
+            if self.request.GET.get("tag"):
+                queryset = queryset.filter(tag__name=self.requst.GET.get("tag"))
 
         return queryset
 
@@ -109,7 +110,7 @@ class FriendsView(LoginRequiredMixin, ListView):
         if form.is_valid():
             context["keyword"] = form.cleaned_data["keyword"]
 
-        context["form"] = form
+        context["tag"] = self.request.GET.get("tag")
         return context
 
 
@@ -191,6 +192,26 @@ def email_change(request):
 def email_change_done(request):
     return render(request, "main/email_change_done.html")
 
+@login_required
+def icon_change(request):
+    if request.method == "GET":
+        form = IconChangeForm(instance=request.user)
+    elif request.method == "POST":
+        form = IconChangeForm(
+            request.POST, request.FILES, instance=request.user
+        )
+        if form.is_valid():
+            form.save()
+            return redirect("icon_change_done")
+
+    context = {
+        "form": form,
+    }
+    return render(request, "main/icon_change.html", context)
+
+@login_required
+def icon_change_done(request):
+    return render(request, "main/icon_change_done.html")
 
 class PasswordChangeView(auth_views.PasswordChangeView):
     """Django 組み込みパスワード変更ビュー
@@ -211,3 +232,4 @@ class PasswordChangeDoneView(auth_views.PasswordChangeDoneView):
 
 class LogoutView(auth_views.LogoutView):
     pass
+

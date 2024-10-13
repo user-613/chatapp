@@ -21,12 +21,18 @@
     font-size: 1.2rem;
 }
 .friends-list__link {
-    display: block;
+    display: flex;
     padding: 8px 16px;
     height: 64px;
 }
+.friends-list__icon {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #003;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
-/* 追加 */
 .pagination {
     text-align: center;
 }

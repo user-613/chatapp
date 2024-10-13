@@ -1,5 +1,5 @@
 {% extends "main/base.html" %}
-{% load static %}
+{% load static chat_appb%}
 
 {% block extra_style %}
 <link rel="stylesheet" href="{% static 'main/css/friends.css' %}">
@@ -8,7 +8,7 @@
 {% block header_title %}友達{% endblock %}
 
 {% block content %}
-<div class="friends">
+<div class="friends-list__username">
     <form method="GET" class="search-form">
         <i class="fas fa-search"></i>
         {{ form.keyword }}
@@ -19,9 +19,10 @@
         {% for friend in friends %}
         <li class="friends-list__item">
             <a href="{% url 'talk_room' friend.id %}" class="friends-list__link">
+                <img src="{% if friend.icon %}{{ friend.icon.url }}{% else %}{% static 'main/img/default-icon.png' %}{% endif %}" class="friends-list__icon">
                 <div class="friends-list__username">
                     {{ friend.username }}<br>
-                    {{ friend.last_talk_time }}
+                    {{ friend.last_talk_time|elapsed_time }}
                 </div>
             </a>
         </li>

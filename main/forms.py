@@ -46,3 +46,21 @@ class FriendsSearchForm(forms.Form):
         required=True,
         widget=forms.TextInput(attrs={"placeholder": "ユーザー名で検索"}),
     )
+class IconChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("icon",)
+        labels = {"icon": "アイコン画像"}
+
+class MessageForm(forms.ModelForm):
+    tag = ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+    )
+
+    class Meta:
+        model = Message
+        fields = [
+            "content",
+            "image",  
+        ]
